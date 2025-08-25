@@ -9,7 +9,7 @@ const { Error, RangeError, TypeError } = require('../errors');
 exports.MaxBulkDeletableMessageAge = 1_209_600_000;
 
 exports.UserAgent =
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Electron/33.4.0 Safari/537.36';
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) discord/1.0.9198 Chrome/134.0.6998.205 Electron/35.3.0 Safari/537.36';
 
 /**
  * Chrome TLS ciphers
@@ -96,8 +96,7 @@ exports.Endpoints = {
         if (dynamic && hash.startsWith('a_')) format = 'gif';
         return makeImageUrl(`${root}/avatars/${userId}/${hash}`, { format, size });
       },
-      AvatarDecoration: (hash, size) =>
-        makeImageUrl(`${root}/avatar-decoration-presets/${hash}`, { format: 'png', size }),
+      AvatarDecoration: hash => makeImageUrl(`${root}/avatar-decoration-presets/${hash}`, { format: 'png' }),
       ClanBadge: (guildId, hash) => `${root}/clan-badges/${guildId}/${hash}.png`,
       GuildMemberAvatar: (guildId, memberId, hash, format = 'webp', size, dynamic = false) => {
         if (dynamic && hash.startsWith('a_')) format = 'gif';
@@ -737,7 +736,7 @@ exports.IntegrationExpireBehaviors = createEnum(['REMOVE_ROLE', 'KICK']);
  * * NITRO_NOTIFICATION
  * @typedef {string} MessageType
  * @see {@link https://discord.com/developers/docs/resources/channel#message-object-message-types}
- * @see {@link https://docs.discord.sex/resources/message#message-type}
+ * @see {@link https://docs.discord.food/resources/message#message-type}
  */
 exports.MessageTypes = [
   'DEFAULT', // 0
@@ -1615,6 +1614,15 @@ exports.MessageComponentTypes = createEnum([
   'ROLE_SELECT',
   'MENTIONABLE_SELECT',
   'CHANNEL_SELECT',
+  'SECTION',
+  'TEXT_DISPLAY',
+  'THUMBNAIL',
+  'MEDIA_GALLERY',
+  'FILE',
+  'SEPARATOR',
+  null,
+  null,
+  'CONTAINER',
 ]);
 
 /**
@@ -1771,7 +1779,7 @@ exports.ForumLayoutTypes = createEnum(['NOT_SET', 'LIST_VIEW', 'GALLERY_VIEW']);
  * * DEFAULT
  * * IMAGE_ONLY_ANSWERS
  * @typedef {string} PollLayoutType
- * @see {@link https://docs.discord.sex/resources/message#poll-layout-type}
+ * @see {@link https://docs.discord.food/resources/message#poll-layout-type}
  */
 exports.PollLayoutTypes = createEnum([null, 'DEFAULT', 'IMAGE_ONLY_ANSWERS']);
 
@@ -1795,6 +1803,8 @@ exports.RelationshipTypes = createEnum([
   'PENDING_OUTGOING',
   'IMPLICIT',
 ]);
+
+exports.SeparatorSpacingSizes = createEnum([null, 'SMALL', 'LARGE']);
 
 exports._cleanupSymbol = Symbol('djsCleanup');
 
@@ -1855,6 +1865,7 @@ function createEnum(keys) {
  * @property {Object<InteractionType, number>} InteractionTypes The type of an {@link Interaction} object.
  * @property {InviteScope[]} InviteScopes The scopes of an invite.
  * @property {Object<RelationshipType, number>} RelationshipTypes Relationship Enums
+ * @property {Object<SeparatorSpacingSize, number>} SeparatorSpacingSize Size of separator padding (Enums)
  * @property {Object<MembershipState, number>} MembershipStates The value set for a team members membership state.
  * @property {Object<MessageButtonStyle, number>} MessageButtonStyles The style of a message button.
  * @property {Object<MessageComponentType, number>} MessageComponentTypes The type of a message component.

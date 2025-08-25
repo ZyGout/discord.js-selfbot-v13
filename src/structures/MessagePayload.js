@@ -154,12 +154,7 @@ class MessagePayload {
     }
 
     let flags;
-    if (
-      // eslint-disable-next-line eqeqeq
-      this.options.flags != null ||
-      (this.isMessage && typeof this.options.reply === 'undefined') ||
-      this.isMessageManager
-    ) {
+    if (this.options.flags != null) {
       flags = new MessageFlags(this.options.flags).bitfield;
     }
 
@@ -262,7 +257,9 @@ class MessagePayload {
       username,
       avatar_url: avatarURL,
       allowed_mentions:
-        typeof content === 'undefined' && typeof message_reference === 'undefined' ? undefined : allowedMentions,
+        this.isMessage && message_reference === undefined && this.target?.author?.id !== this.target?.client?.user?.id
+          ? undefined
+          : allowedMentions,
       flags,
       message_reference,
       attachments: this.options.attachments,
